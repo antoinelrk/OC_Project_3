@@ -125,6 +125,45 @@ li:hover {
 	text-align: center;
 	margin-bottom: 1em;
 }
+
+ul.filters-container {
+	display: flex;
+	flex-wrap: wrap;
+	padding: 16px;
+	width: auto;
+	column-gap: 16px;
+	justify-content: center;
+}
+ul.filters-container li {
+	display: flex;
+	overflow: hidden;
+}
+ul.filters-container li button {
+	display: flex;
+	border: none;
+	background-color: transparent;
+	color: #1D6154;
+	padding: 8px 12px;
+	background-color: #fff;
+	cursor: pointer;
+	border-radius: 9999px;
+	user-select: none;
+	font-family: 'Syne', sans-serif;
+	border: solid 2px #1D6154;
+	transition: color .15s ease, background-color .15s ease;
+}
+ul.filters-container li button.active {
+	cursor: default;
+	background-color: #1D6154;
+	color: #fff;
+	pointer-events: none;
+}
+ul.filters-container li:hover button {
+	background-color: #1D6154;
+	transition: color .15s ease, background-color .15s ease;
+	color: #fff;
+}
+
 .gallery {
 	width: 100%;
 	display: grid;
