@@ -2,7 +2,7 @@
     /**
      * TODO: Supprimer l'appel API des catégories, utiliser le Set pour charger les categories à partir des works
      */
-    let works = await fetch('http://localhost:5678/api/works').then(response => response.json())
+    let works = new Set(await fetch('http://localhost:5678/api/works').then(response => response.json()))
     let categories = await fetch('http://localhost:5678/api/categories').then(response => response.json())
 
     let filtersContainer = document.querySelector('.filters-container')
@@ -31,7 +31,7 @@
 })();
 
 const changeArrayForFilter = (works, filter) => {
-    let filtered = works.filter(element => filter.id !== 0 ? element.categoryId === filter.id : element)
+    let filtered = [...works].filter(element => filter.id !== 0 ? element.categoryId === filter.id : element)
 
     let gallery = document.querySelector('.gallery')
     gallery.innerHTML = ''
