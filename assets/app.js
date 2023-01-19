@@ -1,6 +1,6 @@
 (async () => {
     /**
-     * On request les travaux à l'API
+     * TODO: Supprimer l'appel API des catégories, utiliser le Set pour charger les categories à partir des works
      */
     let works = await fetch('http://localhost:5678/api/works').then(response => response.json())
     let categories = await fetch('http://localhost:5678/api/categories').then(response => response.json())
