@@ -1,9 +1,12 @@
 (async () => {
-    /**
-     * TODO: Supprimer l'appel API des catégories, utiliser le Set pour charger les categories à partir des works
-     */
     let works = new Set(await fetch('http://localhost:5678/api/works').then(response => response.json()))
-    let categories = await fetch('http://localhost:5678/api/categories').then(response => response.json())
+
+    let categories = []
+    works.forEach((work) => {
+        if (categories.findIndex(element => element.id === work.categoryId) == -1) {
+            categories.push(work.category)
+        }
+    })
 
     let filtersContainer = document.querySelector('.filters-container')
 
