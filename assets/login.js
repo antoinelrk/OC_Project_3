@@ -36,5 +36,12 @@ loginForm.addEventListener('submit', async (e) => {
         body: JSON.stringify(credentials)
     }).then(response => response.json())
       .then((data) => data)
+
+    if (request.status === 200) {
+        sessionStorage.setItem('token', request.token)
+        console.log(request)
+        window.location.url = `./index.html`
+    }
+
     console.log(request)
 })
