@@ -1,5 +1,7 @@
+import {API_URL} from './Constants.js'
+
 (async () => {
-    let works = new Set(await fetch('http://localhost:5678/api/works').then(response => response.json()))
+    let works = new Set(await fetch(`${API_URL}/works`).then(response => response.json()))
 
     let categories = []
     works.forEach((work) => {
