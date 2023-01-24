@@ -1,4 +1,6 @@
-import { API_URL } from "./Constants.js"
+import { API_URL, SessionManager } from "./libs.js"
+
+if (SessionManager().isAuthenticated()) window.location.href = `./index.html`
 
 const loginForm = document.querySelector('.login-form')
 loginForm.addEventListener('submit', async (e) => {
@@ -14,6 +16,9 @@ loginForm.addEventListener('submit', async (e) => {
      */
     const inputEmail = document.querySelector('input[type=email]')
     const inputPassword = document.querySelector('input[type=password]')
+
+    inputEmail.value = "sophie.bluel@test.tld"
+    inputPassword.value = "S0phie"
 
     const credentials = {
         email: inputEmail.value,
@@ -35,24 +40,11 @@ loginForm.addEventListener('submit', async (e) => {
 
     switch (request.status) {
         case 200:
-            sessionStorage.setItem('token', data.token)
+            SessionManager().validate(data.token)
             window.location.href = `./index.html`
-            storeCookie('token', {
-                token: data.token
-            }, null)
             break;
         default:
             let errorsMessage = document.querySelector('.errors')
             errorsMessage.innerText = `${request.status} ${request.statusText}`
     }
 })
-
-const storeCookie = async (key, data, expire = null) => {
-    console.log(document.cookie)
-}
-
-const clearCookie = async (key, data, expire = null) => {
-    console.log(document.cookie)
-}
-
-const getCookies = () => document.cookie.split(';')
