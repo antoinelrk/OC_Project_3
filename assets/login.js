@@ -15,11 +15,6 @@ loginForm.addEventListener('submit', async (e) => {
     const inputEmail = document.querySelector('input[type=email]')
     const inputPassword = document.querySelector('input[type=password]')
 
-    // ¤ DEBUG ¤ //s 
-    inputEmail.value = "sophie.bluel@test.tld"
-    inputPassword.value = "S0phie"
-    // ¤ END ¤ //
-
     const credentials = {
         email: inputEmail.value,
         password: inputPassword.value
@@ -34,14 +29,30 @@ loginForm.addEventListener('submit', async (e) => {
         mode: 'cors',
         headers: headers,
         body: JSON.stringify(credentials)
-    }).then(response => response.json())
-      .then((data) => data)
+    }).then(response => response)
 
-    if (request.status === 200) {
-        sessionStorage.setItem('token', request.token)
-        console.log(request)
-        window.location.url = `./index.html`
+    const data = await request.json()
+
+    switch (request.status) {
+        case 200:
+            sessionStorage.setItem('token', data.token)
+            window.location.href = `./index.html`
+            storeCookie('token', {
+                token: data.token
+            }, null)
+            break;
+        default:
+            let errorsMessage = document.querySelector('.errors')
+            errorsMessage.innerText = `${request.status} ${request.statusText}`
     }
-
-    console.log(request)
 })
+
+const storeCookie = async (key, data, expire = null) => {
+    console.log(document.cookie)
+}
+
+const clearCookie = async (key, data, expire = null) => {
+    console.log(document.cookie)
+}
+
+const getCookies = () => document.cookie.split(';')
