@@ -1,4 +1,4 @@
-import { SessionManager } from './libs.js'
+import {SessionManager} from "./core/SessionManager.js"
 
 /**
  * Authenticated
