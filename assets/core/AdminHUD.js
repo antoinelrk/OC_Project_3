@@ -1,4 +1,8 @@
-const addAdminsButtons = () => {
+export const createAdminHUD = () => {
+    let authLink = document.querySelector('#authLink')
+    authLink.removeAttribute('href')
+    authLink.innerText = `logout`
+
     const bioTextBtn = document.createElement('button')
     const bioImageBtn = document.createElement('button')
     const worksBtn = document.createElement('button')
@@ -26,10 +30,6 @@ const addAdminsButtons = () => {
     introductionBio.prepend(bioTextBtn)
     introductionImage.append(bioImageBtn)
     portfolio.append(worksBtn)
-}
-
-export const createAdminHUD = () => {
-    addAdminsButtons()
     
     let adminBanner = document.createElement('div')
     adminBanner.classList.add('admin-banner')
@@ -53,7 +53,5 @@ export const createAdminHUD = () => {
 }
 
 export const deleteAdminHUD = () => {
-    /**
-     * On supprime la barre d'administration
-     */
+    document.querySelectorAll('.auth-component').forEach((component) => component.remove());
 }

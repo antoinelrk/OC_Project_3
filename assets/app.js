@@ -1,23 +1,12 @@
 import {SessionManager} from "./core/SessionManager.js"
 
-/**
- * Authenticated
- */
-let authLink = document.querySelector('#authLink')
-
-if (SessionManager().isAuthenticated()) {
-    authLink.removeAttribute('href')
-    authLink.innerText = `logout`
-}
-
-authLink.addEventListener('click', (e) => {
+document.querySelector('#authLink').addEventListener('click', (e) => {
     if (SessionManager().isAuthenticated()) {
         e.preventDefault()
+        e.target.innerText = `login`
         SessionManager().unvalidate()
-        authLink.innerText = `login`
-        const authComponents = document.querySelectorAll('.auth-component')
-        authComponents.forEach((component) => component.remove());
+        SessionManager().refreshHUD()
     } else {
-        if (authLink.getAttribute('href') === null) authLink.setAttribute('href', 'login.html')
+        if (e.target.getAttribute('href') === null) e.target.setAttribute('href', 'login.html')
     }
 })
