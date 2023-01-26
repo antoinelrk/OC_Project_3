@@ -18,7 +18,7 @@ loginForm.addEventListener('submit', async (e) => {
     const inputPassword = document.querySelector('input[type=password]')
 
     inputEmail.value = "sophie.bluel@test.tld"
-    inputPassword.value = "S0phie"
+    inputPassword.value = "S0ph123ie"
 
     const credentials = {
         email: inputEmail.value,
@@ -38,13 +38,17 @@ loginForm.addEventListener('submit', async (e) => {
 
     const data = await request.json()
 
+    let errorsMessage = document.querySelector('.errors')
+
     switch (request.status) {
         case 200:
             SessionManager().validate(data.token)
             window.location.href = `./index.html`
             break;
+        case 401:
+            errorsMessage.innerText = `L'adresse e-mail et/ou le mot de passe sont incorrect`
+            break;
         default:
-            let errorsMessage = document.querySelector('.errors')
             errorsMessage.innerText = `${request.status} ${request.statusText}`
     }
 })
