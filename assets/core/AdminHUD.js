@@ -1,4 +1,31 @@
+import { SessionManager } from "./SessionManager.js"
+
+const showModal = (modal) => {
+    if (!modal.classList.contains('deployed')) modal.classList.add('deployed')
+}
+
+const closeModal = (modal) => {
+    if (!SessionManager().isAuthenticated()) {
+        deleteAdminHUD()
+        return
+    }
+    modal.classList.remove('deployed')
+}
+
 export const createAdminHUD = () => {
+    /**
+     * On créé la modal
+     */
+    const modal = document.createElement('aside')
+    modal.classList.add('js-modal', 'auth-component', 'deployed')
+    const modalPattern = `
+    <div class="modal-wrapper">
+        
+    </div>`
+    const closeModalBtn = document.createElement('button')
+    closeModalBtn.innerHTML = `Close modal`
+    modal.prepend(closeModalBtn)
+
     let authLink = document.querySelector('#authLink')
     authLink.removeAttribute('href')
     authLink.innerText = `logout`
@@ -50,6 +77,13 @@ export const createAdminHUD = () => {
     `
     adminBanner.innerHTML = topBarPattern
     document.body.prepend(adminBanner)
+
+    /**
+     * Quand on clic sur le WorksBtn
+     */
+    worksBtn.addEventListener('click', (e) => showModal(modal))
+    closeModalBtn.addEventListener('click', (e) => closeModal(modal))
+    document.querySelector('#app').prepend(modal)
 }
 
 export const deleteAdminHUD = () => {

@@ -1,4 +1,4 @@
-import { API_URL } from "./libs.js";
+import { API_URL } from "./core/Constants.js";
 import { SessionManager } from "./core/SessionManager.js";
 
 SessionManager().refreshHUD();
