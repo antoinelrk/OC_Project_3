@@ -39,6 +39,21 @@ SessionManager().refreshHUD();
             e.target.classList.add('active')
         })
     })
+
+    /**
+     * On prépare la logique pour ajouter une image
+     */
+    if (SessionManager().isAuthenticated()) {
+        const worksEditionBtn = document.querySelector('.js-works-edition')
+        const adminModal = document.querySelector('.admin-modal')
+        if (adminModal !== undefined) {
+            worksEditionBtn.addEventListener('click', (e) => {
+                adminModal.classList.add('deployed')
+                console.log(e.target.parentNode)
+                console.log(adminModal)
+            })
+        }
+    }
 })();
 
 const changeArrayForFilter = (works, filter) => {

@@ -1,14 +1,20 @@
 export const createAdminHUD = () => {
+    /**
+     * Auth Links
+     */
     let authLink = document.querySelector('#authLink')
     authLink.removeAttribute('href')
     authLink.innerText = `logout`
 
+    /**
+     * Admin Edit buttons
+     */
     const bioTextBtn = document.createElement('button')
     const bioImageBtn = document.createElement('button')
     const worksBtn = document.createElement('button')
     bioTextBtn.classList.add('btn-editor', 'auth-component')
     bioImageBtn.classList.add('btn-editor', 'auth-component')
-    worksBtn.classList.add('btn-editor', 'auth-component')
+    worksBtn.classList.add('btn-editor', 'auth-component', 'js-works-edition')
 
     const btnPattern = `
     <div class="icon">
@@ -31,6 +37,9 @@ export const createAdminHUD = () => {
     introductionImage.append(bioImageBtn)
     portfolio.append(worksBtn)
     
+    /**
+     * Admin banner
+     */
     let adminBanner = document.createElement('div')
     adminBanner.classList.add('admin-banner')
     adminBanner.classList.add('auth-component')
@@ -50,6 +59,29 @@ export const createAdminHUD = () => {
     `
     adminBanner.innerHTML = topBarPattern
     document.body.prepend(adminBanner)
+
+    /**
+     * Admin Modal
+     */
+    const adminModal = document.createElement('aside')
+    adminModal.classList.add('admin-modal')
+    adminModal.setAttribute('aria-hidden', true)
+    const adminModalPattern = `
+    <div class="modal-wrapper">
+        <button class="js-modal-close">Fermer la modale</button>
+        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid libero iusto exercitationem earum omnis eligendi minus quidem natus sit necessitatibus amet facere, provident architecto atque commodi itaque, officiis perspiciatis doloremque!
+        At quis dicta magnam, consequatur voluptatum fuga earum ex id tenetur hic fugit. Ullam laborum provident perferendis, obcaecati libero dignissimos unde molestiae aliquid in nam nihil quaerat voluptatum? Tempore, laborum.
+        Ratione, non! Omnis culpa quas iusto cumque placeat sit nulla veniam optio exercitationem magnam aliquam similique expedita, assumenda ratione adipisci fugiat illo maxime minima eius libero officiis praesentium ab doloremque!
+        Quia impedit consequuntur nihil voluptates voluptatum saepe cumque neque harum omnis sed suscipit doloremque cum dolorum, sunt exercitationem recusandae magnam officia unde molestiae tempore quaerat dolores itaque possimus velit. Nulla.
+        Eligendi recusandae incidunt quae inventore fuga ducimus accusantium, molestias, corrupti autem quibusdam culpa deserunt corporis natus voluptatum quam facilis non itaque libero ad officiis enim, dolorem aliquid consectetur obcaecati. Repudiandae!
+        Possimus cupiditate cum similique, quisquam architecto expedita provident vel suscipit natus tempore quas iste fuga omnis placeat maxime perferendis sapiente nam eius maiores facilis earum? Asperiores corrupti aperiam veniam rerum.
+        Ratione modi impedit voluptate temporibus veniam iure consectetur eum quae doloremque recusandae possimus atque a laborum, numquam dolores repellendus doloribus ut officiis sit, quibusdam eos dolorem earum nostrum? Aliquam, magnam?
+        Facere sit reprehenderit dolores deserunt aliquid dolor pariatur? Facilis dolores vitae iure distinctio odio quia inventore, harum deleniti, error dolor saepe omnis, aperiam dolore vero expedita? Atque sunt enim architecto!
+        Beatae a officiis fugiat laboriosam, facere dolores ratione sequi, atque velit vero sit in animi exercitationem rerum obcaecati delectus, soluta tempore sunt. Animi laboriosam iste deserunt qui nihil aspernatur alias.
+        Iusto ad cumque obcaecati nam similique a odio earum non facilis voluptatum ea natus mollitia molestiae deserunt nulla reprehenderit veniam temporibus doloremque tempore esse dolorum sed, sapiente dicta eveniet. Cupiditate.
+    </div>`
+    adminModal.innerHTML = adminModalPattern
+    document.querySelector('#app').prepend(adminModal)
 }
 
 export const deleteAdminHUD = () => {
