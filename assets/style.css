@@ -396,13 +396,87 @@ footer nav ul {
 }
 
 .modal-wrapper {
+	display: flex;
+	flex-direction: column;
 	width: 600px;
 	max-width: calc(100% - 20px);
 	max-height: calc(100% - 80px);
-	padding: 20px;
 	background-color: #fff;
 	overflow: auto;
 	animation: slideFromTop .5s both;
+	border-radius: 8px;
+	padding-bottom: 40px;
+}
+
+.modal-wrapper .modal-header {
+	display: flex;
+	justify-content: right;
+	padding: 24px;
+}
+.modal-wrapper .modal-header button.modal-right-btn {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 20px;
+	height: 20px;
+	aspect-ratio: 1/1;
+	padding: 0;
+	border: none;
+	background-color: transparent;
+	cursor: pointer;
+}
+.modal-wrapper .modal-header button.modal-right-btn figure {
+	display: flex;
+	width: 100%;
+	height: 100%;
+}
+
+.modal-wrapper .modal-body {
+	display: flex;
+	flex-direction: column;
+	margin: 0 5em;
+	row-gap: 2em;
+}
+
+.modal-wrapper .modal-body h3.modal-title {
+	display: flex;
+	justify-content: center;
+	font-size: 2em;
+	font-weight: normal;
+	font-family: 'Work Sans';
+}
+.modal-wrapper .modal-body .works-modal-wrapper {
+	position: relative;
+	display: grid;
+	padding: 20px 0;
+}
+.modal-wrapper .modal-body .works-modal-wrapper:after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 1px;
+	background-color: #B3B3B3;
+}
+.modal-wrapper .modal-body a.add-picture-modal-link {
+	display: flex;
+	width: auto;
+	margin: 0 auto;
+	border-radius: 9999px;
+	background-color: #1D6154;
+	padding: 12px 64px;
+	color: white;
+	text-decoration: none;
+	font-family: 'Syne';
+}
+.modal-wrapper .modal-body a.remove-gallery {
+	display: flex;
+	margin: 0 auto;
+	color: #D65353;
+	text-decoration: none;
+	font-family: 'Syne';
+	font-weight: 200;
 }
 
 .modal[aria-hidden="true"] {

@@ -98,10 +98,7 @@ const stopPropagation = (e) => {
 
     categories.forEach((category) => {
         let li = document.createElement('li')
-        li.innerHTML = `
-        <li>
-            <button class="filter-btn" data-id="${category.id}">${category.name}</button>
-        </li>`
+        li.innerHTML = `<li><button class="filter-btn" data-id="${category.id}">${category.name}</button></li>`
         filtersContainer.appendChild(li)
     })
 
