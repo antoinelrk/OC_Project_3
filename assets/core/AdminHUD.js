@@ -1,3 +1,17 @@
+import { SessionManager } from "./SessionManager.js"
+
+const showModal = (modal) => {
+    if (!modal.classList.contains('deployed')) modal.classList.add('deployed')
+}
+
+const closeModal = (modal) => {
+    if (!SessionManager().isAuthenticated()) {
+        deleteAdminHUD()
+        return
+    }
+    modal.classList.remove('deployed')
+}
+
 export const createAdminHUD = () => {
     /**
      * Auth Links
