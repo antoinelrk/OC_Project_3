@@ -357,8 +357,8 @@ footer nav ul {
 
 aside.admin-modal {
 	position: fixed;
-	display: flex;
-	flex-direction: column;
+	display: none;
+	flex-direction: row;
 	top: 0;
 	left: 0;
 	width: 100%;
@@ -368,10 +368,42 @@ aside.admin-modal {
 	background-color: rgba(0, 0, 0, .8);
 	z-index: 99;
 }
+aside.admin-modal.deployed {
+	display: flex;
+}
 
 aside.admin-modal .modal-wrapper {
 	display: flex;
 	flex-direction: column;
+	padding: 3em 5em;
 	background-color: white;
-	width: auto;
+	max-width: 40%;
+	max-height: 80%;
+	border-radius: .75em;
+	overflow: hidden;
+	width: 100%;
+}
+
+aside.admin-modal .modal-wrapper form {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+	background-color: blue;
+}
+
+aside.admin-modal .modal-wrapper form ul.list-of-works {
+	display: grid;
+	grid-template-columns: repeat(autofit, 75px);
+	width: 100%;
+	column-gap: 8px;
+	row-gap: 8px;
+	background-color: green;
+}
+
+aside.admin-modal .modal-wrapper form ul.list-of-works li.work {
+	display: flex;
+	width: 75px;
+	aspect-ratio: 1 / 1.5;
+	background-color: red;
 }

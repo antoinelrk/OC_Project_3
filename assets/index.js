@@ -1,5 +1,6 @@
 import { API_URL } from "./core/Constants.js";
 import { SessionManager } from "./core/SessionManager.js";
+import { setAdminModal } from "./core/AdminHUD.js";
 
 SessionManager().refreshHUD();
 
@@ -44,13 +45,30 @@ SessionManager().refreshHUD();
      * On prépare la logique pour ajouter une image
      */
     if (SessionManager().isAuthenticated()) {
+        /**
+         * On setup la modale avec les données
+         */
+        let adminModalElement = setAdminModal(works)
+        /**
+         * Quand on clic que le bouton modifier, la modal (avec les données) s'ouvre
+         */
         const worksEditionBtn = document.querySelector('.js-works-edition')
-        const adminModal = document.querySelector('.admin-modal')
-        if (adminModal !== undefined) {
-            worksEditionBtn.addEventListener('click', (e) => {
-                adminModal.classList.add('deployed')
-                console.log(e.target.parentNode)
-                console.log(adminModal)
+        if (adminModalElement !== undefined) {
+            /**
+             * Quand on clic que le bouton modifer, on show la modale
+             */
+            worksEditionBtn.addEventListener('click', () => {
+                adminModalElement.classList.add('deployed')
+                document.body.style.overflow = `hidden`
+            })
+
+            /**
+             * On close l'admin modal quand on clic autre part
+             */
+            adminModalElement.addEventListener('click', (e) => {
+                e.stopPropagation()
+                e.target.classList.remove('deployed')
+                document.body.style.overflow = `auto`
             })
         }
     }
