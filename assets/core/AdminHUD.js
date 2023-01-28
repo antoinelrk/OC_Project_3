@@ -1,17 +1,5 @@
 import { SessionManager } from "./SessionManager.js"
 
-const showModal = (modal) => {
-    if (!modal.classList.contains('deployed')) modal.classList.add('deployed')
-}
-
-const closeModal = (modal) => {
-    if (!SessionManager().isAuthenticated()) {
-        deleteAdminHUD()
-        return
-    }
-    modal.classList.remove('deployed')
-}
-
 export const createAdminHUD = (data = null) => {
     /**
      * Auth Links
@@ -25,10 +13,11 @@ export const createAdminHUD = (data = null) => {
      */
     const bioTextBtn = document.createElement('button')
     const bioImageBtn = document.createElement('button')
-    const worksBtn = document.createElement('button')
+    const worksBtn = document.createElement('a')
     bioTextBtn.classList.add('btn-editor', 'auth-component')
     bioImageBtn.classList.add('btn-editor', 'auth-component')
-    worksBtn.classList.add('btn-editor', 'auth-component', 'js-works-edition')
+    worksBtn.classList.add('modal-link', 'auth-component', 'js-works-edition', 'js-modal')
+    worksBtn.setAttribute('href', '#modal1')
 
     const btnPattern = `
     <div class="icon">
@@ -73,50 +62,64 @@ export const createAdminHUD = (data = null) => {
     `
     adminBanner.innerHTML = topBarPattern
     document.body.prepend(adminBanner)
-}
 
-export const setAdminModal = (data = null) => {
     /**
-     * Admin Modal
+     * On créé la modale d'édition du portfolio
      */
-    const adminModal = document.createElement('aside')
-    adminModal.classList.add('admin-modal', 'auth-component')
-    adminModal.setAttribute('aria-hidden', true)
-    let patternWithData = ``
+    let portfolioEditModal = document.createElement('aside')
+    portfolioEditModal.setAttribute('id', 'modal1')
+    portfolioEditModal.classList.add('modal', 'auth-component')
+    portfolioEditModal.setAttribute('style', 'display: none;')
+    portfolioEditModal.setAttribute('aria-hidden', 'true')
+    portfolioEditModal.setAttribute('role', 'dialog')
+    portfolioEditModal.setAttribute('aria-labelledby', 'titlemodal')
+    const portfolioEditModalPattern = `
+    <div class="modal-wrapper js-modal-stop">
+        <button class="js-modal-close">Fermer la modal</button>
+        <h1 id="titlemodal">Condition d'utilisation</h1>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo perferendis quo velit expedita voluptatibus quam. Enim reiciendis eius numquam rem debitis cumque, quidem nesciunt voluptatum minus error obcaecati nisi eos.
+        Aliquam voluptatibus eveniet doloribus repellendus quos autem quaerat saepe? Magni ratione aliquam suscipit, sit aperiam hic aliquid veniam nemo natus culpa distinctio cumque, accusantium itaque tempora molestias repudiandae adipisci ea?
+        Tempora optio laudantium ipsam non nam beatae eaque laboriosam eveniet perferendis iure quod, error ducimus, velit doloremque! Deserunt, quidem voluptatibus molestiae corrupti consectetur ratione, debitis doloribus, natus minima adipisci recusandae?
+        Repudiandae incidunt maiores, quod error corrupti pariatur eveniet rerum fugit consectetur nostrum? Excepturi numquam voluptatem quibusdam? Asperiores, velit exercitationem modi dolore non, aliquid quo sed tempora distinctio, est aspernatur nisi.
+        Voluptates, atque iusto? Quod consequatur architecto eos autem ea error, at impedit. Ut quibusdam doloremque non, quos modi sequi libero blanditiis eveniet at, totam, repellat nostrum nulla molestiae distinctio officia!
+        Beatae maxime eligendi blanditiis debitis ipsam veritatis expedita est tempore obcaecati quae id accusantium eum repellendus amet tempora praesentium molestias similique fugit, minima quas! Minima sequi exercitationem recusandae similique cum.
+        Totam illum nihil esse veritatis. Culpa deleniti sunt fugit eaque voluptas aliquam asperiores illo adipisci, pariatur dicta id cupiditate ipsam minima esse porro! Perspiciatis corrupti ipsum nesciunt vel consequatur. Accusantium!
+        Maiores consequatur ratione dolores repellat expedita iste dolorum eligendi. Non ducimus sunt optio voluptatem maiores? Placeat vitae asperiores velit ipsam quisquam, est illum nam voluptate odio? Non iusto itaque aut.
+        Temporibus quos, pariatur ducimus quisquam sequi est sit sed error omnis dolor nemo natus odit asperiores veritatis iusto tempore consectetur rerum accusantium obcaecati odio at? Iusto deleniti molestiae libero commodi.
+        Dolores odio eius aspernatur. Odit vitae consequuntur voluptatem ex illum alias sint dolorem quos est, autem et nobis incidunt nemo vel quas ipsum magni in natus nihil sunt! Fugiat, nulla!
+        Dolorem, nostrum voluptas placeat expedita necessitatibus neque vero sapiente iste ducimus quibusdam blanditiis delectus nihil? Exercitationem, praesentium enim optio sunt iure esse nesciunt quasi tempora odit accusamus ratione ullam cumque.
+        Praesentium quos quia, unde doloribus fugiat nisi illo. Quae laborum, iste quidem placeat non dolore quos est maxime magni possimus numquam sed omnis quo aperiam minus. Dolor inventore molestiae soluta?
+        <p>Wow! A superpowers drug you can just rub onto your skin? You'd think it would be something you'd have to freebase. You lived before you met me?! You know, I was God once. I am the man with no name, Zapp Brannigan!</p>
+        <p>Is today's hectic lifestyle making you tense and impatient? Can we have Bender Burgers again? <strong> Why would I want to know that?</strong> <em> In our darkest hour, we can stand erect, with proud upthrust bosoms.</em> Why would a robot need to drink?</p>
+        <h2>Oh, you're a dollar naughtier than most.</h2>
+        <a href="">test</a>
+        <p>I'm Santa Claus! Goodbye, friends. I never thought I'd die like this. But I always really hoped. I wish! It's a nickel. Say what? Oh, I always feared he might run off like this. Why, why, why didn't I break his legs?</p>
+        <ol>
+        <li>It must be wonderful.</li><li>Oh yeah, good luck with that.</li><li>Well, let's just dump it in the sewer and say we delivered it.</li>
+        </ol>
 
-    if (data !== null) {
-        console.log(data)
-        data.forEach((element) => {
-            patternWithData += `
-            <li class="work">
-                <img class="work-img" src="${element.imageUrl}" alt="" />
-                <div class="work-img-controls">
-                    <button class="js-movework-button">
-                        M
-                    </button>
-                    <button class="js-removework-button">
-                        D
-                    </button>
-                </div>
-            </li>
-            `
+        <h3>That could be 'my' beautiful soul sitting naked on a couch. If I could just learn to play this stupid thing.</h3>
+        <p>I'm sorry, guys. I never meant to hurt you. Just to destroy everything you ever believed in. I saw you with those two "ladies of the evening" at Elzars. Explain that. I barely knew Philip, but as a clergyman I have no problem telling his most intimate friends all about him.</p>
+        <ul>
+        <li>We'll need to have a look inside you with this camera.</li><li>Meh.</li><li>Uh, is the puppy mechanical in any way?</li>
+        </ul>
+        <input type="text">
+        <p>Guess again. I just told you! You've killed me! It's a T. It goes "tuh". We need rest. The spirit is willing, but the flesh is spongy and bruised. Leela, are you alright? You got wanged on the head. Oh God, what have I done?</p>
+        <p>Guards! Bring me the forms I need to fill out to have her taken away! Oh yeah, good luck with that. You are the last hope of the universe. Hello Morbo, how's the family? Then we'll go with that data file!</p>
+        <p>Oh no! The professor will hit me! But if Zoidberg 'fixes' it… then perhaps gifts! Good news, everyone! I've taught the toaster to feel love! What's with you kids? Every other day it's food, food, food. Alright, I'll get you some stupid food.</p>
+        <p>Now Fry, it's been a few years since medical school, so remind me. Disemboweling in your species: fatal or non-fatal? Fry! Quit doing the right thing, you jerk! It must be wonderful. Shinier than yours, meatbag.</p>
+        <p>I had more, but you go ahead. Who are you, my warranty?! You guys realize you live in a sewer, right? Dr. Zoidberg, that doesn't make sense. But, okay!</p>
+        <p>Bender, this is Fry's decision… and he made it wrong. So it's time for us to interfere in his life. With a warning label this big, you know they gotta be fun! And until then, I can never die? I'm sure those windmills will keep them cool.</p>
+        <p>You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Eeeee! Now say "nuclear wessels"! Shut up and take my money! No! I want to live! There are still too many things I don't own!</p>
+        <p>Soothe us with sweet lies. Hey, whatcha watching? You, minion. Lift my arm. AFTER HIM! Well I'da done better, but it's plum hard pleading a case while awaiting trial for that there incompetence.</p>
+        <p>It's a T. It goes "tuh". Oh, I don't have time for this. I have to go and buy a single piece of fruit with a coupon and then return it, making people wait behind me while I complain. Yes, if you make it look like an electrical fire. When you do things right, people won't be sure you've done anything at all.</p>
+        <p>Oh, all right, I am. But if anything happens to me, tell them I died robbing some old man. I usually try to keep my sadness pent up inside where it can fester quietly as a mental illness. Ask her how her day was.</p>
+        <p>Your best is an idiot! No argument here. And until then, I can never die? I just want to talk. It has nothing to do with mating. Fry, that doesn't make sense. Ow, my spirit!</p>
+    </div>
+    `
+    portfolioEditModal.innerHTML = portfolioEditModalPattern
+    document.querySelector('#app').prepend(portfolioEditModal)
 
-        })
-    }
-
-    const adminModalPattern = `
-    <div class="modal-wrapper">
-        <button class="modal-close-btn">
-            
-        </button>
-        <form action="" method="POST">
-            <ul class="list-of-works">${patternWithData}</ul>
-            <button type="submit">Envoyer</button>
-        </form>
-    </div>`
-    adminModal.innerHTML = adminModalPattern
-    document.querySelector('#app').prepend(adminModal)
-    return adminModal
 }
 
 export const deleteAdminHUD = () => {
