@@ -51,6 +51,7 @@ const closeModal = (e) => {
         modal.style.display = "none"
         modal.removeEventListener('animationend', hideModal)
         modal = null
+        document.querySelector('.modal-wrapper').classList.remove('slided')
     }
     modal.addEventListener('animationend', hideModal)
 }

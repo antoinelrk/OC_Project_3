@@ -393,27 +393,47 @@ footer nav ul {
 	height: 100%;
 	background-color: rgba(0, 0, 0, .8);
 	animation: fadeIn .3s both;
+	overflow-x: hidden;
 }
 
 .modal-wrapper {
 	display: flex;
+	position: relative;
 	flex-direction: column;
 	width: 600px;
 	max-width: calc(100% - 20px);
 	max-height: calc(100% - 80px);
 	background-color: #fff;
-	overflow: auto;
+	overflow: hidden;
 	animation: slideFromTop .5s both;
 	border-radius: 8px;
+}
+.modal-wrapper .modal-section {
 	padding-bottom: 40px;
+	width: 100%;
+	transition: transform .3s ease;
+}
+.modal-wrapper .modal-section:nth-child(1) {
+	position: relative;
+	transform: translateX(0);
+}
+.modal-wrapper .modal-section:nth-child(2) {
+	position: absolute;
+	transform: translateX(100%);
+}
+.modal-wrapper.slided .modal-section:nth-child(1) {
+	transform: translateX(-100%);
+}
+.modal-wrapper.slided .modal-section:nth-child(2) {
+	transform: translateX(0);
 }
 
-.modal-wrapper .modal-header {
+.modal-wrapper .modal-section .modal-header {
 	display: flex;
 	justify-content: right;
 	padding: 24px;
 }
-.modal-wrapper .modal-header button.modal-right-btn {
+.modal-wrapper .modal-section .modal-header button.modal-right-btn {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -425,32 +445,36 @@ footer nav ul {
 	background-color: transparent;
 	cursor: pointer;
 }
-.modal-wrapper .modal-header button.modal-right-btn figure {
+.modal-wrapper .modal-section .modal-header button.modal-right-btn.left {
+	margin-right: auto;
+}
+.modal-wrapper .modal-section .modal-header button.modal-right-btn figure {
 	display: flex;
 	width: 100%;
 	height: 100%;
+	pointer-events: none;
 }
 
-.modal-wrapper .modal-body {
+.modal-wrapper .modal-section .modal-body {
 	display: flex;
 	flex-direction: column;
 	margin: 0 5em;
 	row-gap: 2em;
 }
 
-.modal-wrapper .modal-body h3.modal-title {
+.modal-wrapper .modal-section .modal-body h3.modal-title {
 	display: flex;
 	justify-content: center;
 	font-size: 2em;
 	font-weight: normal;
 	font-family: 'Work Sans';
 }
-.modal-wrapper .modal-body .works-modal-wrapper {
+.modal-wrapper .modal-section .modal-body .works-modal-wrapper {
 	position: relative;
 	display: grid;
 	padding: 20px 0;
 }
-.modal-wrapper .modal-body .works-modal-wrapper:after {
+.modal-wrapper .modal-section .modal-body .works-modal-wrapper:after {
 	content: '';
 	position: absolute;
 	bottom: 0;
@@ -459,7 +483,7 @@ footer nav ul {
 	height: 1px;
 	background-color: #B3B3B3;
 }
-.modal-wrapper .modal-body a.add-picture-modal-link {
+.modal-wrapper .modal-section .modal-body a.add-picture-modal-link {
 	display: flex;
 	width: auto;
 	margin: 0 auto;
@@ -470,7 +494,12 @@ footer nav ul {
 	text-decoration: none;
 	font-family: 'Syne';
 }
-.modal-wrapper .modal-body a.remove-gallery {
+.modal-wrapper .modal-section .modal-body a.add-picture-modal-link.disabled {
+	cursor: default;
+	background-color: gray;
+}
+
+.modal-wrapper .modal-section .modal-body a.remove-gallery {
 	display: flex;
 	margin: 0 auto;
 	color: #D65353;
