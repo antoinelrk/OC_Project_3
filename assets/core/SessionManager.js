@@ -2,7 +2,7 @@ import { createAdminHUD, deleteAdminHUD } from "./AdminHUD.js"
 
 export const SessionManager = () => {
     return {
-        refreshHUD: () => SessionManager().isAuthenticated() ? createAdminHUD() : deleteAdminHUD(),
+        refreshHUD: (data = null) => SessionManager().isAuthenticated() ? createAdminHUD(data = null) : deleteAdminHUD(),
         unvalidate: () => sessionStorage.removeItem('token'),
         validate: (token, expire = null) => sessionStorage.setItem('token', token),
         isAuthenticated: () => {

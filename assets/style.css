@@ -469,12 +469,59 @@ footer nav ul {
 	font-weight: normal;
 	font-family: 'Work Sans';
 }
-.modal-wrapper .modal-section .modal-body .works-modal-wrapper {
+.modal-wrapper .modal-section .modal-body .modal-works-wrapper {
 	position: relative;
 	display: grid;
-	padding: 20px 0;
+	grid-template-columns: repeat(5, 80px);
+	justify-content: space-around;
+	column-gap: 1em;
+	row-gap: 1em;
+	width: 100%;
+	padding-bottom: 2em;
 }
-.modal-wrapper .modal-section .modal-body .works-modal-wrapper:after {
+.modal-wrapper .modal-section .modal-body .modal-works-wrapper .work {
+	position: relative;
+	display: flex;
+	width: 80px;
+	overflow: hidden;
+}
+.modal-wrapper .modal-section .modal-body .modal-works-wrapper .work:hover .controls {
+	transform: translateY(0);
+}
+.modal-wrapper .modal-section .modal-body .modal-works-wrapper .work .controls {
+	position: absolute;
+	display: flex;
+	top: 4px;
+	right: 4px;
+	height: 16px;
+	column-gap: 4px;
+	transition: transform .15s ease;
+	transform: translateY(calc(-100% - 10px));
+}
+.modal-wrapper .modal-section .modal-body .modal-works-wrapper .work .controls button {
+	display: flex;
+	width: 20px;
+	height: 20px;
+	padding: 0;
+	justify-content: center;
+	cursor: pointer;
+	align-items: center;
+	border: none;
+	border-radius: 2px;
+	background-color: black;
+}
+.modal-wrapper .modal-section .modal-body .modal-works-wrapper .work .controls button figure {
+	display: flex;
+	width: 60%;
+	height: 60%;
+	padding: 0;
+	fill: white;
+}
+.modal-works-wrapper img {
+	width: 100%;
+}
+
+.modal-wrapper .modal-section .modal-body .modal-works-wrapper:after {
 	content: '';
 	position: absolute;
 	bottom: 0;
