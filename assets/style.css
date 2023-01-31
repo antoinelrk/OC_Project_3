@@ -482,6 +482,7 @@ footer nav ul {
 .modal-wrapper .modal-section .modal-body .modal-works-wrapper .work {
 	position: relative;
 	display: flex;
+	flex-direction: column;
 	width: 80px;
 	overflow: hidden;
 }
@@ -516,11 +517,22 @@ footer nav ul {
 	height: 60%;
 	padding: 0;
 	fill: white;
+	pointer-events: none;
 }
 .modal-works-wrapper img {
 	width: 100%;
 }
-
+.modal-wrapper .modal-section .modal-body .modal-works-wrapper .work button.work-edit {
+	position: relative;
+	padding: 2px 0;
+	border: none;
+	width: auto;
+	margin-right: auto;
+	font-family: 'Work Sans', sans-serif;
+	background-color: white;
+	z-index: 99;
+	cursor: pointer;
+}
 .modal-wrapper .modal-section .modal-body .modal-works-wrapper:after {
 	content: '';
 	position: absolute;

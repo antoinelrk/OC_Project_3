@@ -5,6 +5,9 @@ export const SessionManager = () => {
         refreshHUD: (data = null) => SessionManager().isAuthenticated() ? createAdminHUD(data = null) : deleteAdminHUD(),
         unvalidate: () => sessionStorage.removeItem('token'),
         validate: (token, expire = null) => sessionStorage.setItem('token', token),
+        getToken: () => {
+            return sessionStorage.getItem('token')
+        },
         isAuthenticated: () => {
             let storedToken = sessionStorage.getItem('token')
             if (storedToken === null) return false
