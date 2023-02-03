@@ -32,7 +32,10 @@ const openModal = async (e) => {
     modal.removeAttribute('aria-hidden')
     modal.setAttribute('aria-modal', 'true')
     modal.addEventListener('click', closeModal)
-    modal.querySelector('.js-modal-close')?.addEventListener('click', closeModal)
+    // modal.querySelector('.js-modal-close')?.addEventListener('click', closeModal)
+    modal.querySelectorAll('.js-modal-close')?.forEach((element) => {
+        element?.addEventListener('click', closeModal)
+    })
     modal.querySelector('.js-modal-stop')?.addEventListener('click', stopPropagation)
 }
 
@@ -43,7 +46,10 @@ const closeModal = (e) => {
     modal.setAttribute('aria-hidden', 'true')
     modal.removeAttribute('aria-modal')
     modal.removeEventListener('click', closeModal)
-    modal.querySelector('.js-modal-close')?.removeEventListener('click', closeModal)
+    // modal.querySelector('.js-modal-close')?.removeEventListener('click', closeModal)
+    modal.querySelectorAll('.js-modal-close')?.forEach((element) => {
+        element?.removeEventListener('click', closeModal)
+    })
     modal.querySelector('.js-modal-stop')?.removeEventListener('click', stopPropagation)
     const hideModal = () => {
         modal.style.display = "none"
@@ -234,6 +240,9 @@ const stopPropagation = (e) => {
             })
         }
 
+        /**
+         * Suppression d'une photo
+         */
         document.querySelectorAll('.js-work-delete').forEach((element) => element.addEventListener('click', removeWork))
 
         const addPicturebutton = document.querySelector('.js-add-picture')
@@ -250,8 +259,6 @@ const stopPropagation = (e) => {
         /**
          * Quand on clic que le bouton modifier, la modal (avec les données) s'ouvre
          */
-        const worksEditionBtn = document.querySelector('.js-works-edition')
-
         document.querySelectorAll('.js-modal').forEach(a => {
             a.addEventListener('click', openModal)
         })
