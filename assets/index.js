@@ -87,28 +87,26 @@ const stopPropagation = (e) => {
 /**
  * Work's loading section
  */
-(async () => {
-    let works = new Set(await fetch(`${API_URL}/works`).then(response => response.json()))
-
-    let categories = []
+const updateCategories = (works) => {
+    let localCategories = []
     works.forEach((work) => {
-        if (categories.findIndex(element => element.id === work.categoryId) == -1) {
-            categories.push(work.category)
+        if (localCategories.findIndex(element => element.id === work.categoryId) == -1) {
+            localCategories.push(work.category)
         }
     })
-    
-    SessionManager().refreshHUD(works);
 
     let filtersContainer = document.querySelector('.filters-container')
-
-    categories.forEach((category) => {
-        let li = document.createElement('li')
-        li.innerHTML = `<li><button class="filter-btn" data-id="${category.id}">${category.name}</button></li>`
-        filtersContainer.appendChild(li)
+    let filterPattern = `
+        <li><button data-id="0" class="filter-btn active">Tous</button></li>
+    `
+    localCategories.forEach((category) => {
+        filterPattern += `<li><button class="filter-btn" data-id="${category.id}">${category.name}</button></li>`
     })
+    filtersContainer.innerHTML = filterPattern
+    applyFilterListener(works)
+}
 
-    changeArrayForFilter(works, {id: 0})
-
+const applyFilterListener = (works) => {
     const buttonFilter = document.querySelectorAll('button.filter-btn')
     buttonFilter.forEach((button) => {
         button.addEventListener('click', (e) => {
@@ -119,7 +117,15 @@ const stopPropagation = (e) => {
             e.target.classList.add('active')
         })
     })
+}
 
+(async () => {
+    let works = new Set(await fetch(`${API_URL}/works`).then(response => response.json()))
+
+    SessionManager().refreshHUD(works);
+    updateCategories(works)
+    changeArrayForFilter(works, {id: 0})
+    applyFilterListener(works)
     /**
      * On prépare la logique pour ajouter une image
      */
@@ -270,6 +276,7 @@ const stopPropagation = (e) => {
                 temp.innerHTML = ``
                 temp.innerHTML = worksLoop
                 changeArrayForFilter(works, {id: 0})
+                updateCategories(works)
                 document.querySelectorAll('.js-work-delete').forEach((element) => element.addEventListener('click', removeWork))
                 // if (works.length === 0) closeModal(e)
             })
