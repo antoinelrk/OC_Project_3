@@ -32,7 +32,6 @@ const openModal = async (e) => {
     modal.removeAttribute('aria-hidden')
     modal.setAttribute('aria-modal', 'true')
     modal.addEventListener('click', closeModal)
-    // modal.querySelector('.js-modal-close')?.addEventListener('click', closeModal)
     modal.querySelectorAll('.js-modal-close')?.forEach((element) => {
         element?.addEventListener('click', closeModal)
     })
@@ -46,7 +45,6 @@ const closeModal = (e) => {
     modal.setAttribute('aria-hidden', 'true')
     modal.removeAttribute('aria-modal')
     modal.removeEventListener('click', closeModal)
-    // modal.querySelector('.js-modal-close')?.removeEventListener('click', closeModal)
     modal.querySelectorAll('.js-modal-close')?.forEach((element) => {
         element?.removeEventListener('click', closeModal)
     })
@@ -169,50 +167,87 @@ const stopPropagation = (e) => {
 
         worksLooped()
 
-        const portfolioEditModalPattern = `
-        <div class="modal-wrapper js-modal-stop">
-            <div class="modal-section">
-                <div class="modal-header">
-                    <button class="js-modal-close modal-right-btn">
-                        <figure>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24">
-                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"></path>
-                            </svg>
-                        </figure>
-                    </button>
-                </div>
-                <div class="modal-body">
+        // TODO: Supprimer le slided de modal-wrapper
+        const listOfPicturesPattern = `
+        <div class="modal-section loop-picture-section">
+            <div class="modal-header">
+                <button class="js-modal-close modal-right-btn">
+                    <figure>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24">
+                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"></path>
+                        </svg>
+                    </figure>
+                </button>
+            </div>
+            <div class="modal-body">
                 <h3 class="modal-title">Galerie photo</h3>
                 <div class="modal-works-wrapper">${worksLoop}</div>
+                <div class="bar"></div>
                 <a class="add-picture-modal-link js-add-picture" href="">Ajouter une photo</a>
                 <a class="remove-gallery" href="">Supprimer la galerie</a>
-                </div>
             </div>
-
-            <div class="modal-section">
-                <div class="modal-header">
-                    <button class="js-modal-back modal-right-btn left">
-                        <figure>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="80%" height="80%" viewBox="0 0 20 20">
-                                <path d="M3.828 9l6.071-6.071-1.414-1.414L0 10l.707.707 7.778 7.778 1.414-1.414L3.828 11H20V9H3.828z"></path>
-                            </svg>
-                        </figure>
-                    </button>
-                    <button class="js-modal-close modal-right-btn">
-                        <figure>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24">
-                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"></path>
-                            </svg>
-                        </figure>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <h3 class="modal-title">Ajout photo</h3>
-                    <div class="works-modal-wrapper"></div>
-                    <a class="add-picture-modal-link disabled" href="#">Valider</a>
-                </div>
+        </div>
+        `
+        const addNewPictureFormPattern = `            
+        <div class="modal-section add-picture-section">
+            <div class="modal-header">
+                <button class="js-modal-back modal-right-btn left">
+                    <figure>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="80%" height="80%" viewBox="0 0 20 20">
+                            <path d="M3.828 9l6.071-6.071-1.414-1.414L0 10l.707.707 7.778 7.778 1.414-1.414L3.828 11H20V9H3.828z"></path>
+                        </svg>
+                    </figure>
+                </button>
+                <button class="js-modal-close modal-right-btn">
+                    <figure>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24">
+                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"></path>
+                        </svg>
+                    </figure>
+                </button>
             </div>
-
+            <div class="modal-body">
+                <h3 class="modal-title">Ajout photo</h3>
+                <form action="" class="add-work">
+                    <div class="form-group upload">
+                        <div class="image-thumb">
+                            <div class="icon">
+                                <figure>
+                                    <svg width="100%" height="100%" viewBox="0 0 58 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M57 0H1C0.448 0 0 0.447 0 1V45C0 45.553 0.448 46 1 46H57C57.552 46 58 45.553 58 45V1C58 0.447 57.552 0 57 0ZM56 44H2V2H56V44Z" fill="#B9C5CC"/>
+                                        <path d="M16 22.138C19.071 22.138 21.569 19.64 21.569 16.57C21.569 13.498 19.071 11 16 11C12.929 11 10.431 13.498 10.431 16.569C10.431 19.64 12.929 22.138 16 22.138ZM16 13C17.968 13 19.569 14.602 19.569 16.569C19.569 18.536 17.968 20.138 16 20.138C14.032 20.138 12.431 18.537 12.431 16.57C12.431 14.603 14.032 13 16 13Z" fill="#B9C5CC"/>
+                                        <path d="M7.00004 40C7.23404 40 7.47004 39.918 7.66004 39.751L23.973 25.389L34.275 35.69C34.666 36.081 35.298 36.081 35.689 35.69C36.08 35.299 36.08 34.667 35.689 34.276L30.882 29.469L40.063 19.415L51.324 29.738C51.731 30.111 52.364 30.083 52.737 29.676C53.11 29.269 53.083 28.636 52.675 28.263L40.675 17.263C40.479 17.084 40.218 16.995 39.955 17.001C39.69 17.013 39.44 17.13 39.261 17.326L29.467 28.053L24.724 23.31C24.35 22.937 23.752 22.918 23.356 23.266L6.33904 38.249C5.92404 38.614 5.88404 39.246 6.24904 39.661C6.44704 39.886 6.72304 40 7.00004 40Z" fill="#B9C5CC"/>
+                                    </svg>
+                                </figure>
+                            </div>
+                            <div class="loaded-img"></div>
+                        </div>
+                        <label class="upload-label" for="image">+ Ajouter photo</label>
+                        <input type="file" hidden name="image" id="image">
+                        <p class="upload-info">jpg, png: 4mo max</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="text-label" for="title">Titre</label>
+                        <input type="text" name="title" id="title">
+                    </div>
+                    <div class="form-group">
+                        <label class="text-label" for="category">Catégorie</label>
+                        <select class="category-selector" name="category" id="category">
+                            <option value="" disabled selected>— Selectionner une categorie —</option>
+                            <option class="option-category" value="1">Bar</option>
+                            <option class="option-category" value="1">Bar2</option>
+                            <option class="option-category" value="1">Bar3</option>
+                        </select>
+                    </div>
+                    <div class="form-group bar"></div>
+                    <button class="add-picture-modal-link disabled" type="submit">Valider</button>
+                </form>
+            </div>
+        </div>`
+        const portfolioEditModalPattern = `
+        <div class="modal-wrapper js-modal-stop">
+            ${listOfPicturesPattern}
+            ${addNewPictureFormPattern}
         </div>
         `
         portfolioEditModal.innerHTML = portfolioEditModalPattern
@@ -246,7 +281,7 @@ const stopPropagation = (e) => {
         document.querySelectorAll('.js-work-delete').forEach((element) => element.addEventListener('click', removeWork))
 
         const addPicturebutton = document.querySelector('.js-add-picture')
-        addPicturebutton.addEventListener('click', (e) => {
+        addPicturebutton?.addEventListener('click', (e) => {
             e.preventDefault()
             document.querySelector('.modal-section').parentNode.classList.add('slided')
         })
