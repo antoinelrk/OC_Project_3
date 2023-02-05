@@ -42,6 +42,7 @@ const closeModal = (e) => {
     if (modal === null) return
     if (previouslyFocusedElement !== null) previouslyFocusedElement.focus()
     e.preventDefault()
+    cleanThumb()
     modal.setAttribute('aria-hidden', 'true')
     modal.removeAttribute('aria-modal')
     modal.removeEventListener('click', closeModal)
@@ -128,42 +129,6 @@ const applyFilterListener = (works) => {
 
     if (SessionManager().isAuthenticated()) {
         /**
-         * Fonction d'ajout de travaux (works)
-         */
-
-        const addWork = async (e) => {
-            /**
-             * 
-             */
-        }
-        
-        /**
-         * Fonction de suppression des travaux (works)
-         */
-        const removeWork = async (e) => {
-            let workId = parseInt(e.target.getAttribute('data-id'))
-
-            await fetch(`${API_URL}/works/${workId}`, {
-                method: 'DELETE',
-                headers: {
-                    "accept": "*/*",
-                    "Authorization": `Bearer ${SessionManager().getToken()}`
-                }
-            })
-            .then(() => {
-                works = [...works].filter(work => work.id !== workId)
-                worksLooped()
-                let temp = document.querySelector('.modal-works-wrapper')
-                temp.innerHTML = ``
-                temp.innerHTML = worksLoop
-                changeArrayForFilter(works, {id: 0})
-                updateCategories(works)
-                document.querySelectorAll('.js-work-delete').forEach((element) => element.addEventListener('click', removeWork))
-                // if (works.length === 0) closeModal(e)
-            })
-        }
-
-        /**
          * On créé la modale d'édition du portfolio
          * On créé les patterns d'affichages et la logique de construction du DOM
          * On génère le tableau des données pour la modal:
@@ -243,10 +208,10 @@ const applyFilterListener = (works) => {
             </div>
             <div class="modal-body">
                 <h3 class="modal-title">Ajout photo</h3>
-                <form action="" class="add-work">
+                <form action="" class="add-work js-work-add">
                     <div class="form-group upload">
                         <div class="image-thumb">
-                            <div class="icon">
+                            <div class="icon js-no-thumb">
                                 <figure>
                                     <svg width="100%" height="100%" viewBox="0 0 58 46" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M57 0H1C0.448 0 0 0.447 0 1V45C0 45.553 0.448 46 1 46H57C57.552 46 58 45.553 58 45V1C58 0.447 57.552 0 57 0ZM56 44H2V2H56V44Z" fill="#B9C5CC"/>
@@ -255,10 +220,12 @@ const applyFilterListener = (works) => {
                                     </svg>
                                 </figure>
                             </div>
-                            <div class="loaded-img"></div>
+                            <div class="loaded-img">
+                                <img class="js-thumb" />
+                            </div>
                         </div>
                         <label class="upload-label" for="image">+ Ajouter photo</label>
-                        <input type="file" hidden name="image" id="image">
+                        <input type="file" hidden name="image" id="image" class="js-image-changer">
                         <p class="upload-info">jpg, png: 4mo max</p>
                     </div>
                     <div class="form-group">
@@ -282,7 +249,6 @@ const applyFilterListener = (works) => {
         const portfolioEditModalPattern = `<div class="modal-wrapper js-modal-stop">${listOfPicturesPattern}${addNewPictureFormPattern}</div>`
         portfolioEditModal.innerHTML = portfolioEditModalPattern
         document.querySelector('#app').prepend(portfolioEditModal)
-        document.querySelectorAll('.js-work-delete').forEach((element) => element.addEventListener('click', removeWork))
         const addPicturebutton = document.querySelector('.js-add-picture')
         addPicturebutton?.addEventListener('click', (e) => {
             e.preventDefault()
@@ -294,8 +260,83 @@ const applyFilterListener = (works) => {
             document.querySelector('.modal-section').parentNode.classList.remove('slided')
         })
         document.querySelectorAll('.js-modal').forEach(a => a.addEventListener('click', openModal))
+
+        /**
+         * Fonction d'ajout de travaux (works)
+         */
+        document.querySelector('.js-image-changer').addEventListener('change', (e) => {
+            let loadedImage = document.querySelector('.loaded-img');
+            let imgElement = document.querySelector('.js-thumb')
+            let noThumb = document.querySelector('.js-no-thumb')
+            const f = e.target?.files[0];
+            let reader = new FileReader();
+
+            reader.onload = (function () {
+                return (e) => {
+                    localStorage.setItem('tempWork', e.target.result)
+
+                    noThumb.style.display = 'none'
+                    loadedImage.style.display = 'flex'
+
+                    imgElement.setAttribute('src', `${e.target.result}`)
+                }
+            })(f);
+            
+            reader.readAsDataURL(f)
+
+        })
+
+        const addWork = async (e) => {
+            /**
+             * 
+             */
+            e.preventDefault()
+            console.log(e)
+        }
+        
+        /**
+         * Fonction de suppression des travaux (works)
+         */
+        const removeWork = async (e) => {
+            let workId = parseInt(e.target.getAttribute('data-id'))
+
+            await fetch(`${API_URL}/works/${workId}`, {
+                method: 'DELETE',
+                headers: {
+                    "accept": "*/*",
+                    "Authorization": `Bearer ${SessionManager().getToken()}`
+                }
+            })
+            .then(() => {
+                works = [...works].filter(work => work.id !== workId)
+                worksLooped()
+                let temp = document.querySelector('.modal-works-wrapper')
+                temp.innerHTML = ``
+                temp.innerHTML = worksLoop
+                changeArrayForFilter(works, {id: 0})
+                updateCategories(works)
+                document.querySelectorAll('.js-work-delete').forEach((element) => element.addEventListener('click', removeWork))
+                // if (works.length === 0) closeModal(e)
+            })
+        }
+        
+        document.querySelectorAll('.js-work-delete').forEach((element) => element.addEventListener('click', removeWork))
+        document.querySelector('.js-work-add').addEventListener('submit', addWork)
     }
 })();
+
+const cleanThumb = () => {
+    localStorage.removeItem('tempWork')
+
+    let noTumb = document.querySelector('.js-no-thumb')
+    noTumb.style.display = 'flex'
+
+    let loadedImage = document.querySelector('.loaded-img')
+    let imgThumb = document.querySelector('.js-thumb')
+    loadedImage.style.display = 'none'
+    imgThumb.removeAttribute('src')
+
+}
 
 /**
  * Fonction de mise a jour du tableau de travaux
