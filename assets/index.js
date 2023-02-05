@@ -121,17 +121,52 @@ const applyFilterListener = (works) => {
 
 (async () => {
     let works = new Set(await fetch(`${API_URL}/works`).then(response => response.json()))
-
     SessionManager().refreshHUD(works);
     updateCategories(works)
     changeArrayForFilter(works, {id: 0})
     applyFilterListener(works)
-    /**
-     * On prépare la logique pour ajouter une image
-     */
+
     if (SessionManager().isAuthenticated()) {
         /**
+         * Fonction d'ajout de travaux (works)
+         */
+
+        const addWork = async (e) => {
+            /**
+             * 
+             */
+        }
+        
+        /**
+         * Fonction de suppression des travaux (works)
+         */
+        const removeWork = async (e) => {
+            let workId = parseInt(e.target.getAttribute('data-id'))
+
+            await fetch(`${API_URL}/works/${workId}`, {
+                method: 'DELETE',
+                headers: {
+                    "accept": "*/*",
+                    "Authorization": `Bearer ${SessionManager().getToken()}`
+                }
+            })
+            .then(() => {
+                works = [...works].filter(work => work.id !== workId)
+                worksLooped()
+                let temp = document.querySelector('.modal-works-wrapper')
+                temp.innerHTML = ``
+                temp.innerHTML = worksLoop
+                changeArrayForFilter(works, {id: 0})
+                updateCategories(works)
+                document.querySelectorAll('.js-work-delete').forEach((element) => element.addEventListener('click', removeWork))
+                // if (works.length === 0) closeModal(e)
+            })
+        }
+
+        /**
          * On créé la modale d'édition du portfolio
+         * On créé les patterns d'affichages et la logique de construction du DOM
+         * On génère le tableau des données pour la modal:
          */
         let portfolioEditModal = document.createElement('aside')
         portfolioEditModal.setAttribute('id', 'modal1')
@@ -140,9 +175,7 @@ const applyFilterListener = (works) => {
         portfolioEditModal.setAttribute('aria-hidden', 'true') // TODO: CHANGER POUR PRODUCTION (true)
         portfolioEditModal.setAttribute('role', 'dialog')
         portfolioEditModal.setAttribute('aria-labelledby', 'titlemodal')
-
         let worksLoop = ``
-
         const worksLooped = () => {
             if (worksLoop !== ``) worksLoop = ``
             works.forEach((work) => {
@@ -170,10 +203,7 @@ const applyFilterListener = (works) => {
                 `
             })
         }
-
         worksLooped()
-
-        // TODO: Supprimer le slided de modal-wrapper
         const listOfPicturesPattern = `
         <div class="modal-section loop-picture-section">
             <div class="modal-header">
@@ -192,9 +222,8 @@ const applyFilterListener = (works) => {
                 <a class="add-picture-modal-link js-add-picture" href="">Ajouter une photo</a>
                 <a class="remove-gallery" href="">Supprimer la galerie</a>
             </div>
-        </div>
-        `
-        const addNewPictureFormPattern = `            
+        </div>`
+        const addNewPictureFormPattern = `
         <div class="modal-section add-picture-section">
             <div class="modal-header">
                 <button class="js-modal-back modal-right-btn left">
@@ -250,63 +279,27 @@ const applyFilterListener = (works) => {
                 </form>
             </div>
         </div>`
-        const portfolioEditModalPattern = `
-        <div class="modal-wrapper js-modal-stop">
-            ${listOfPicturesPattern}
-            ${addNewPictureFormPattern}
-        </div>
-        `
+        const portfolioEditModalPattern = `<div class="modal-wrapper js-modal-stop">${listOfPicturesPattern}${addNewPictureFormPattern}</div>`
         portfolioEditModal.innerHTML = portfolioEditModalPattern
         document.querySelector('#app').prepend(portfolioEditModal)
-
-        const removeWork = async (e) => {
-            let workId = parseInt(e.target.getAttribute('data-id'))
-
-            await fetch(`${API_URL}/works/${workId}`, {
-                method: 'DELETE',
-                headers: {
-                    "accept": "*/*",
-                    "Authorization": `Bearer ${SessionManager().getToken()}`
-                }
-            })
-            .then(() => {
-                works = [...works].filter(work => work.id !== workId)
-                worksLooped()
-                let temp = document.querySelector('.modal-works-wrapper')
-                temp.innerHTML = ``
-                temp.innerHTML = worksLoop
-                changeArrayForFilter(works, {id: 0})
-                updateCategories(works)
-                document.querySelectorAll('.js-work-delete').forEach((element) => element.addEventListener('click', removeWork))
-                // if (works.length === 0) closeModal(e)
-            })
-        }
-
-        /**
-         * Suppression d'une photo
-         */
         document.querySelectorAll('.js-work-delete').forEach((element) => element.addEventListener('click', removeWork))
-
         const addPicturebutton = document.querySelector('.js-add-picture')
         addPicturebutton?.addEventListener('click', (e) => {
             e.preventDefault()
             document.querySelector('.modal-section').parentNode.classList.add('slided')
         })
-
         const buttonBack = document.querySelector('.js-modal-back')
         buttonBack.addEventListener('click', (e) => {
             e.preventDefault()
             document.querySelector('.modal-section').parentNode.classList.remove('slided')
         })
-        /**
-         * Quand on clic que le bouton modifier, la modal (avec les données) s'ouvre
-         */
-        document.querySelectorAll('.js-modal').forEach(a => {
-            a.addEventListener('click', openModal)
-        })
+        document.querySelectorAll('.js-modal').forEach(a => a.addEventListener('click', openModal))
     }
 })();
 
+/**
+ * Fonction de mise a jour du tableau de travaux
+ */
 const changeArrayForFilter = (works, filter) => {
     let filtered = [...works].filter(element => filter.id !== 0 ? element.categoryId === filter.id : element)
 
