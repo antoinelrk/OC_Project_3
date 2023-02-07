@@ -292,14 +292,14 @@ margin: auto;
 	height: 50px;
 	font-size: 1.2em;
 	border: none;
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	box-shadow: 0px 4px 14px #00000017;
 }
 #contact label {
 	margin: 2em 0 1em 0;
 }
 #contact textarea {
 	border: none;
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	box-shadow: 0px 4px 14px #00000017;
 }
 
 #authentication {
@@ -341,7 +341,7 @@ margin: auto;
 #authentication form .form-group input {
 	display: flex;
 	padding: 16px 8px;
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	box-shadow: 0px 4px 14px #00000017;
 	border: none;
 }
 #authentication form button {
@@ -356,10 +356,10 @@ margin: auto;
 	font-size: 1em;
 	font-family: 'Syne', sans-serif;
 	font-weight: 400;
-	color: white;
+	color: #ffffff;
 }
 #authentication form a {
-	color: black;
+	color: #000000;
 	font-weight: 500;
 	font-size: 13px;
 }
@@ -367,7 +367,7 @@ margin: auto;
 input[type="submit"]{
 	font-family: 'Syne';
 	font-weight: 700;
-	color: white;
+	color: #ffffff;
 	margin : 2em auto ;
 	width: 180px;
 	text-align: center;
@@ -390,7 +390,7 @@ footer nav ul {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0, 0, 0, .8);
+	background-color: #000000cc;
 	animation: fadeIn .3s both;
 	overflow-x: hidden;
 }
@@ -402,7 +402,7 @@ footer nav ul {
 	height: 80vh;
 	max-width: calc(100% - 20px);
 	max-height: calc(100% - 80px);
-	background-color: #fff;
+	background-color: #ffffff;
 	overflow: hidden;
 	animation: slideFromTop .5s both;
 	border-radius: 8px;
@@ -525,7 +525,7 @@ footer nav ul {
 	width: 60%;
 	height: 60%;
 	padding: 0;
-	fill: white;
+	fill: #ffffff;
 	pointer-events: none;
 }
 .modal-works-wrapper img {
@@ -538,7 +538,7 @@ footer nav ul {
 	width: auto;
 	margin-right: auto;
 	font-family: 'Work Sans', sans-serif;
-	background-color: white;
+	background-color: #ffffff;
 	z-index: 99;
 	cursor: pointer;
 }
@@ -579,8 +579,8 @@ footer nav ul {
 .modal-wrapper .modal-section .modal-body form.add-work .form-group input[type="text"] {
 	padding: 16px;
 	border: none;
-	background-color: #fff;
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, .09);
+	background-color: #ffffff;
+	box-shadow: 0px 4px 14px #00000017;
 }
 .modal-wrapper .modal-section .modal-body form.add-work .form-group select.category-selector {
 	padding: 16px;
@@ -588,7 +588,7 @@ footer nav ul {
 .modal-wrapper .modal-section .modal-body form.add-work .form-group select.category-selector option.category {
 	padding: 16px;
 	border: none;
-	background-color: #fff;
+	background-color: #ffffff;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, .09);
 }
 
@@ -642,7 +642,7 @@ footer nav ul {
 	background-color: #1D6154;
 	justify-content: center;
 	padding: 12px 0;
-	color: white;
+	color: #ffffff;
 	text-decoration: none;
 	font-family: 'Syne';
 	border: none;
@@ -656,7 +656,7 @@ footer nav ul {
 }
 .modal-wrapper .modal-section .modal-body button.add-picture-modal-link.disabled {
 	cursor: default;
-	background-color: gray;
+	background-color: #808080;
 }
 
 .modal[aria-hidden="true"] {
