@@ -666,6 +666,10 @@ footer nav ul {
 	animation-name: slideToBottom;
 }
 
+p.form-errors {
+	color: #D65353;
+}
+
 @keyframes fadeIn {
 	from {
 		opacity: 0;

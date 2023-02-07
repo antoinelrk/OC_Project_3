@@ -1,4 +1,4 @@
-import { API_URL } from "./core/Constants.js";
+import { API_URL, AUTHORIZED_TYPE } from "./core/Constants.js";
 import { SessionManager } from "./core/SessionManager.js";
 
 let modal = null
@@ -6,24 +6,10 @@ const focusableSelector = 'button, a, input, textarea'
 let focusables = []
 let previouslyFocusedElement = null
 
-const loadModal = async (url) => {
-    const target = '#' + url.split('#')[1]
-    const existingElement = document.querySelector(target)
-    if (existingElement !== null) return existingElement
-    const html = await fetch(url).then(response => response.text())
-    const element = document.createRange().createContextualFragment(html).querySelector(target)
-    if (element === null) throw `L'élément ${target} n'as pas été trouvé dans la page ${url}`
-    document.querySelector('#app').prepend(element)
-    return element
-}
 const openModal = async (e) => {
     e.preventDefault()
     const target = e.target.getAttribute('href')
-    if (target.startsWith('#')) {
-        modal = document.querySelector(target)
-    } else {
-        modal = await loadModal(target)
-    }
+    modal = document.querySelector(target)
     focusables = Array.from(modal.querySelectorAll(focusableSelector))
     previouslyFocusedElement = document.querySelector(':focus')
     modal.style.display = null
@@ -40,7 +26,7 @@ const closeModal = (e) => {
     if (modal === null) return
     if (previouslyFocusedElement !== null) previouslyFocusedElement.focus()
     e.preventDefault()
-    cleanThumb()
+    resetAddworkForm()
     modal.setAttribute('aria-hidden', 'true')
     modal.removeAttribute('aria-modal')
     modal.removeEventListener('click', closeModal)
@@ -99,6 +85,9 @@ const updateCategories = (works) => {
     applyFilterListener(works)
 }
 
+/**
+ * Quand on clique sur un bouton de filtre, on applique le filtre sur le Set et on change la classe du bouton
+ */
 const applyFilterListener = (works) => {
     const buttonFilter = document.querySelectorAll('button.filter-btn')
     buttonFilter.forEach((button) => {
@@ -112,6 +101,9 @@ const applyFilterListener = (works) => {
     })
 }
 
+/**
+ * Fonction principale de gestion des projets
+ */
 (async () => {
     let works = new Set(await fetch(`${API_URL}/works`).then(response => response.json()))
     SessionManager().refreshHUD(works);
@@ -119,11 +111,6 @@ const applyFilterListener = (works) => {
     changeArrayForFilter(works, {id: 0})
 
     if (SessionManager().isAuthenticated()) {
-        /**
-         * On créé la modale d'édition du portfolio
-         * On créé les patterns d'affichages et la logique de construction du DOM
-         * On génère le tableau des données pour la modal:
-         */
         let portfolioEditModal = document.createElement('aside')
         portfolioEditModal.setAttribute('id', 'modal1')
         portfolioEditModal.classList.add('modal', 'auth-component')
@@ -136,8 +123,6 @@ const applyFilterListener = (works) => {
         const categoriesLooped = async () => {
             let categories = await fetch(`${API_URL}/categories`).then(response => response.json())
             categoriesLoop = categories
-
-            // return categoriesLoop
         }
         await categoriesLooped()
         let categoriesPattern = ``
@@ -182,20 +167,21 @@ const applyFilterListener = (works) => {
                             </div>
                         </div>
                         <label class="upload-label" for="image">+ Ajouter photo</label>
-                        <input type="file" hidden name="image" id="image" class="js-image-changer">
+                        <input type="file" hidden name="image" id="image" class="js-image-changer" accept="image/png, image/jpeg, image/jpg, image/webp">
                         <p class="upload-info">jpg, png: 4mo max</p>
                     </div>
                     <div class="form-group">
                         <label class="text-label" for="title">Titre</label>
-                        <input type="text" name="title" id="title">
+                        <input type="text" name="title" id="title" required>
                     </div>
                     <div class="form-group">
                         <label class="text-label" for="category">Catégorie</label>
-                        <select class="category-selector" name="category" id="category">
+                        <select class="category-selector" name="category" id="category" required>
                             <option value="" disabled selected>— Selectionner une categorie —</option>
                             ${categoriesPattern}
                         </select>
                     </div>
+                    <p class=form-errors></p>
                     <div class="form-group bar"></div>
                     <button class="add-picture-modal-link disabled" type="submit">Valider</button>
                 </form>
@@ -227,6 +213,9 @@ const applyFilterListener = (works) => {
         portfolioEditModal.innerHTML = portfolioEditModalPattern
         document.querySelector('#app').prepend(portfolioEditModal)
 
+        /**
+         * Fonction de refresh pour la liste des travaux dans le formulaire 
+         */
         const refreshWorkLoop = (works) => {
             const modalWorkWrapper = document.querySelector('.modal-works-wrapper')
             modalWorkWrapper.innerHTML = ``
@@ -258,7 +247,6 @@ const applyFilterListener = (works) => {
             modalWorkWrapper.innerHTML = worksLoop
 
         }
-
         refreshWorkLoop(works)
 
         const addPicturebutton = document.querySelector('.js-add-picture')
@@ -275,49 +263,57 @@ const applyFilterListener = (works) => {
 
         /**
          * Quand l'input du formulaire d'envoi change
-         * TODO: Vérifier que le fichier soit bien une image !
          */
         document.querySelector('.js-image-changer').addEventListener('change', (e) => {
+            clearFormErrors()
             let loadedImage = document.querySelector('.loaded-img');
             let imgElement = document.querySelector('.js-thumb')
             let noThumb = document.querySelector('.js-no-thumb')
             const f = e.target?.files[0];
             let reader = new FileReader();
 
-            reader.onload = (function () {
-                return (e) => {
-                    localStorage.setItem('tempWork', e.target.result)
-
-                    noThumb.style.display = 'none'
-                    loadedImage.style.display = 'flex'
-
-                    imgElement.setAttribute('src', `${e.target.result}`)
-                }
-            })(f);
-            
-            reader.readAsDataURL(f)
-
+            const type = f.type.split('/')[1]
+            if (AUTHORIZED_TYPE.includes(type)) {
+                reader.onload = (function () {
+                    return (e) => {
+                        localStorage.setItem('tempWork', e.target.result)
+    
+                        noThumb.style.display = 'none'
+                        loadedImage.style.display = 'flex'
+    
+                        imgElement.setAttribute('src', `${e.target.result}`)
+                    }
+                })(f);
+                
+                reader.readAsDataURL(f)
+            } else {
+                e.target.value = null
+                appendsFormError(`Le fichier doit être une image de type: jpeg,jpg,png`)
+                return false
+            }
         })
 
         /**
          * Fonction d'ajout de travaux (works)
          */
         const addWork = async (e) => {
-            /**
-             * TODO: Vérifier que tout les inputs ne soit pas null
-             */
+            clearFormErrors()
             e.preventDefault()
             const image = e.target.image.files[0]
+            const title = e.target.title.value
+            const category = parseInt(e.target.category.value)
+
             const data = {
                 image: image,
-                title: e.target.title.value,
-                category: parseInt(e.target.category.value)
+                title: title,
+                category: category
             }
 
             const formData = new FormData()
             formData.append('image', data.image)
             formData.append('title', data.title)
             formData.append('category', data.category)
+            formData.forEach((e) => e === undefined ? appendsFormError(`${e} est requis<br>`) : '')
 
             await fetch(`${API_URL}/works`, {
                 method: 'POST',
@@ -327,10 +323,6 @@ const applyFilterListener = (works) => {
                 },
                 body: formData
             })
-
-            /**
-             * TODO: Redraw le tableau de la page principale
-             */
             .then(response => response.json()).then((data) => {
                 let clonedWorks = works
                 const currentCategory = categoriesLoop.filter((category) => category.id === parseInt(e.target.category.value))
@@ -384,6 +376,13 @@ const applyFilterListener = (works) => {
         document.querySelector('.js-work-add').addEventListener('submit', addWork)
     }
 })();
+
+const clearFormErrors = () => document.querySelector('.form-errors').innerHTML = ``
+
+const appendsFormError = (message) => {
+    let formErrors = document.querySelector('.form-errors')
+    formErrors.innerHTML += `${message}<br>`
+}
 
 const cleanThumb = () => {
     localStorage.removeItem('tempWork')
