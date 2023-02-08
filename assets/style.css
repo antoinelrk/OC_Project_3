@@ -62,7 +62,7 @@ body {
 .icon figure {
 	width: 100%;
 	height: 100%;
-	fill: white;
+	fill: #ffffff;
 }
 
 .admin-banner {
@@ -70,8 +70,8 @@ body {
 	justify-content: center;
 	width: 100%;
 	height: 56px;
-	background-color: black;
-	color: white;
+	background-color: #000000;
+	color: #ffffff;
 }
 .admin-banner .centered-wrapper {
 	display: flex;
@@ -100,7 +100,7 @@ button.btn-editor:hover span {
 	text-decoration: underline;
 }
 button.btn-editor .icon figure {
-	fill: black;
+	fill: #000000;
 }
 button.btn-editor span {
 	font-family: 'Work Sans';
@@ -203,7 +203,7 @@ li:hover {
 	text-decoration: none;
 	font-size: .9rem;
 	font-weight: normal;
-	color: black;
+	color: #000000;
 }
 #portfolio h2 a.modal-link:hover {
 	text-decoration: underline;
@@ -212,7 +212,7 @@ li:hover {
 	pointer-events: none;
 }
 #portfolio h2 a.modal-link .icon figure {
-	fill: black;
+	fill: #000000;
 	pointer-events: none;
 }
 #portfolio h2 a.modal-link span {
@@ -238,7 +238,7 @@ ul.filters-container li button {
 	background-color: transparent;
 	color: #1D6154;
 	padding: 8px 12px;
-	background-color: #fff;
+	background-color: #ffffff;
 	cursor: pointer;
 	border-radius: 9999px;
 	user-select: none;
@@ -249,13 +249,13 @@ ul.filters-container li button {
 ul.filters-container li button.active {
 	cursor: default;
 	background-color: #1D6154;
-	color: #fff;
+	color: #ffffff;
 	pointer-events: none;
 }
 ul.filters-container li:hover button {
 	background-color: #1D6154;
 	transition: color .15s ease, background-color .15s ease;
-	color: #fff;
+	color: #ffffff;
 }
 
 .gallery {
@@ -268,7 +268,10 @@ ul.filters-container li:hover button {
 
 .gallery img {
 	width: 100%;
-
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+	aspect-ratio: 1 / 1.35;
 }
 #contact {
 	width: 50%;
@@ -403,7 +406,7 @@ footer nav ul {
 	max-width: calc(100% - 20px);
 	max-height: calc(100% - 80px);
 	background-color: #ffffff;
-	overflow: hidden;
+	overflow-x: hidden;
 	animation: slideFromTop .5s both;
 	border-radius: 8px;
 }
@@ -495,6 +498,13 @@ footer nav ul {
 	width: 80px;
 	overflow: hidden;
 }
+.modal-wrapper .modal-section .modal-body .modal-works-wrapper .work img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+	aspect-ratio: 1 / 1.35;
+}
 .modal-wrapper .modal-section .modal-body .modal-works-wrapper .work:hover .controls {
 	transform: translateY(0);
 }
@@ -518,7 +528,7 @@ footer nav ul {
 	align-items: center;
 	border: none;
 	border-radius: 2px;
-	background-color: black;
+	background-color: #000000;
 }
 .modal-wrapper .modal-section .modal-body .modal-works-wrapper .work .controls button figure {
 	display: flex;
