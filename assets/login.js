@@ -9,9 +9,6 @@ loginForm.addEventListener('submit', async (e) => {
     const inputEmail = document.querySelector('input[type=email]')
     const inputPassword = document.querySelector('input[type=password]')
 
-    inputEmail.value = "sophie.bluel@test.tld"
-    inputPassword.value = "S0phie"
-
     const credentials = {
         email: inputEmail.value,
         password: inputPassword.value
