@@ -270,6 +270,10 @@ const applyFilterListener = (works) => {
             let imgElement = document.querySelector('.js-thumb')
             let noThumb = document.querySelector('.js-no-thumb')
             const f = e.target?.files[0];
+            if (f.size > 4000000) {
+                appendsFormError(`Le fichier est trop lourd: 4Mo maximum !`)
+                return
+            }
             let reader = new FileReader();
 
             const type = f.type.split('/')[1]
