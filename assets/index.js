@@ -261,12 +261,9 @@ const applyFilterListener = (works) => {
         })
         document.querySelectorAll('.js-modal').forEach(a => a.addEventListener('click', openModal))
 
-        /**
-         * Quand l'input du formulaire d'envoi change
-         */
         document.querySelector('.js-image-changer').addEventListener('change', (e) => {
             clearFormErrors()
-            let loadedImage = document.querySelector('.loaded-img');
+            let loadedImage = document.querySelector('.loaded-img')
             let imgElement = document.querySelector('.js-thumb')
             let noThumb = document.querySelector('.js-no-thumb')
             const f = e.target?.files[0];
