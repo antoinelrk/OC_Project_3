@@ -23,7 +23,7 @@ export const SessionManager = () => {
          * @returns bool
          */
         isAuthenticated: () => {
-            let storedToken = getToken()
+            let storedToken = SessionManager().getToken()
             if (storedToken === null) return false
             return true;
         }
