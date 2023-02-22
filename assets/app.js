@@ -1,5 +1,8 @@
 import {SessionManager} from "./core/SessionManager.js"
 
+/**
+ * Check if user is logged, apply of true
+ */
 document.querySelector('#authLink').addEventListener('click', (e) => {
     if (SessionManager().isAuthenticated()) {
         e.preventDefault()

@@ -1,13 +1,13 @@
 export const createAdminHUD = (data = null) => {
     /**
-     * Auth Links
+     * Create logout button
      */
     let authLink = document.querySelector('#authLink')
     authLink.removeAttribute('href')
     authLink.innerText = `logout`
 
     /**
-     * Admin Edit buttons
+     * Create "Modifier" buttons
      */
     const bioTextBtn = document.createElement('button')
     const bioImageBtn = document.createElement('button')
@@ -39,7 +39,7 @@ export const createAdminHUD = (data = null) => {
     portfolio.append(worksBtn)
     
     /**
-     * Admin banner
+     * Create admin top banner
      */
     let adminBanner = document.createElement('div')
     adminBanner.classList.add('admin-banner')
@@ -62,6 +62,9 @@ export const createAdminHUD = (data = null) => {
     document.body.prepend(adminBanner)
 }
 
+/**
+ * Remove Admin HUD after logout
+ */
 export const deleteAdminHUD = () => {
     document.querySelectorAll('.auth-component').forEach((component) => component.remove());
 }

@@ -27,6 +27,7 @@ const closeModal = (e) => {
     if (previouslyFocusedElement !== null) previouslyFocusedElement.focus()
     e.preventDefault()
     resetAddworkForm()
+    document.querySelector('button.add-picture-modal-link').classList.add('disabled')
     modal.setAttribute('aria-hidden', 'true')
     modal.removeAttribute('aria-modal')
     modal.removeEventListener('click', closeModal)
@@ -261,16 +262,42 @@ const applyFilterListener = (works) => {
         })
         document.querySelectorAll('.js-modal').forEach(a => a.addEventListener('click', openModal))
 
-        /**
-         * Quand l'input du formulaire d'envoi change
-         */
+        document.querySelector('#title').addEventListener('change', (e) => {
+            const imageInput = document.querySelector('#image')
+            const categoriesInput = document.querySelector('#category')
+
+            if (imageInput.value !== null && categoriesInput.value !== null) {
+                document.querySelector('button.add-picture-modal-link').classList.remove('disabled')
+            }
+        })
+
+        document.querySelector('#category').addEventListener('change', (e) => {
+            const titleInput = document.querySelector('#title')
+            const imageInput = document.querySelector('#image')
+
+            if (titleInput.value !== null && imageInput.value !== null) {
+                document.querySelector('button.add-picture-modal-link').classList.remove('disabled')
+            }
+        })
+
         document.querySelector('.js-image-changer').addEventListener('change', (e) => {
             clearFormErrors()
-            let loadedImage = document.querySelector('.loaded-img');
+            let loadedImage = document.querySelector('.loaded-img')
             let imgElement = document.querySelector('.js-thumb')
             let noThumb = document.querySelector('.js-no-thumb')
             const f = e.target?.files[0];
+            if (f.size > 4000000) {
+                appendsFormError(`Le fichier est trop lourd: 4Mo maximum !`)
+                return
+            }
             let reader = new FileReader();
+
+            const titleInput = document.querySelector('#title')
+            const categoriesInput = document.querySelector('#category')
+
+            if (titleInput.value !== null && categoriesInput.value !== null) {
+                document.querySelector('button.add-picture-modal-link').classList.remove('disabled')
+            }
 
             const type = f.type.split('/')[1]
             if (AUTHORIZED_TYPE.includes(type)) {
@@ -343,6 +370,7 @@ const applyFilterListener = (works) => {
                 refreshWorkLoop(works)
                 document.querySelector('.modal-wrapper').classList.remove('slided')
                 document.querySelectorAll('.js-work-delete').forEach((element) => element.addEventListener('click', removeWork))
+                document.querySelector('button.add-picture-modal-link').classList.add('disabled')
                 resetAddworkForm()
             })
         }
