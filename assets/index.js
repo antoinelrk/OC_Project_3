@@ -370,6 +370,7 @@ const applyFilterListener = (works) => {
                 refreshWorkLoop(works)
                 document.querySelector('.modal-wrapper').classList.remove('slided')
                 document.querySelectorAll('.js-work-delete').forEach((element) => element.addEventListener('click', removeWork))
+                document.querySelector('button.add-picture-modal-link').classList.add('disabled')
                 resetAddworkForm()
             })
         }
