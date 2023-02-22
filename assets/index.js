@@ -27,6 +27,7 @@ const closeModal = (e) => {
     if (previouslyFocusedElement !== null) previouslyFocusedElement.focus()
     e.preventDefault()
     resetAddworkForm()
+    document.querySelector('button.add-picture-modal-link').classList.add('disabled')
     modal.setAttribute('aria-hidden', 'true')
     modal.removeAttribute('aria-modal')
     modal.removeEventListener('click', closeModal)
@@ -261,6 +262,24 @@ const applyFilterListener = (works) => {
         })
         document.querySelectorAll('.js-modal').forEach(a => a.addEventListener('click', openModal))
 
+        document.querySelector('#title').addEventListener('change', (e) => {
+            const imageInput = document.querySelector('#image')
+            const categoriesInput = document.querySelector('#category')
+
+            if (imageInput.value !== null && categoriesInput.value !== null) {
+                document.querySelector('button.add-picture-modal-link').classList.remove('disabled')
+            }
+        })
+
+        document.querySelector('#category').addEventListener('change', (e) => {
+            const titleInput = document.querySelector('#title')
+            const imageInput = document.querySelector('#image')
+
+            if (titleInput.value !== null && imageInput.value !== null) {
+                document.querySelector('button.add-picture-modal-link').classList.remove('disabled')
+            }
+        })
+
         document.querySelector('.js-image-changer').addEventListener('change', (e) => {
             clearFormErrors()
             let loadedImage = document.querySelector('.loaded-img')
@@ -272,6 +291,13 @@ const applyFilterListener = (works) => {
                 return
             }
             let reader = new FileReader();
+
+            const titleInput = document.querySelector('#title')
+            const categoriesInput = document.querySelector('#category')
+
+            if (titleInput.value !== null && categoriesInput.value !== null) {
+                document.querySelector('button.add-picture-modal-link').classList.remove('disabled')
+            }
 
             const type = f.type.split('/')[1]
             if (AUTHORIZED_TYPE.includes(type)) {
