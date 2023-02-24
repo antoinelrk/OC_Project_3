@@ -412,6 +412,9 @@ const appendsFormError = (message) => {
     formErrors.innerHTML += `${message}<br>`
 }
 
+/**
+ * Nettoyage de la thumbnail du formulaire d'ajout
+ */
 const cleanThumb = () => {
     localStorage.removeItem('tempWork')
 
@@ -425,6 +428,9 @@ const cleanThumb = () => {
 
 }
 
+/**
+ * Remise a zéro du formulaire d'ajout
+ */
 const resetAddworkForm = () => {
     cleanThumb()
     document.querySelector('#title').value = ``
